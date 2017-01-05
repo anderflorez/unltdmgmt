@@ -11,3 +11,8 @@
 	margin-top: 5%;
 	margin-bottom: 3%
 }
+
+.btn-lg {
+	line-height: 0;
+	height: 40px;
+}

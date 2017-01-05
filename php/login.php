@@ -1,3 +1,7 @@
+<?php
+	require_once('connection.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +35,7 @@
 						<form action="login.php" method="post">
 							<fieldset>
 								<div class="form-group">
-									<input type="email" name="email" class="form-control" placeholder="Username or E-mail" autofocus>
+									<input type="text" name="email" class="form-control" placeholder="Username or E-mail" autofocus>
 								</div>
 								<div class="form-group">
 									<input type="password" name="password" class="form-control" placeholder="Password">
@@ -42,7 +46,7 @@
 									</label>
 								</div>
 								<div class="form-group">
-									<a class="btn btn-lg btn-success btn-block" href="#">Login</a>
+									<input class="form-control btn btn-lg btn-success btn-block" type="submit" name="login" value="Login">
 								</div>
 								<div class="form-group pull-right text-danger">
 									<a href="http://unlimitedcompanies.com/uecweb/v1.0/">Forgot password</a>
@@ -55,6 +59,31 @@
 		</div>
 	</div>
 
+	<?php
+		if (isset($_POST["login"])) {
+			$email = mysqli_real_escape_string($db, $_POST['email']);
+			$password = mysqli_real_escape_string($db, $_POST['password']);			
+			$sql = "SELECT username, password FROM users WHERE username = '$email'";
+			$result = mysqli_query($db, $sql);
+			$rows = mysqli_num_rows($result);
+			$result = mysqli_fetch_assoc($result);
+
+			if ($rows == 1) {
+				$pass = $result['password'];
+				if (password_verify($password, $pass)) {
+					$_SESSION['loginUser'] = $username;
+					header("Location: http://unlimitedcompanies.com/uecweb/v1.0/");
+				}
+				else {
+					echo "Incorrect username or password";
+				}
+			}
+			else {
+				echo "Incorrect username or password";
+			}
+		}
+	?>
+
 	<!-- JQuery -->
 	<script type="text/javascript" src="../js/jquery-3.1.1.js"></script>
 
@@ -66,3 +95,8 @@
 
 </body>
 </html>
+
+<?php
+	// Close connection
+	mysqli_close($db);
+?>
