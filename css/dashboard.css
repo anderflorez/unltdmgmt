@@ -1,0 +1,13 @@
+@font-face {
+	font-family: ucFont;
+	src: url(../fonts/TrajanPro-Bold.ttf);
+}
+
+#logintitle,
+#logintitle > h3 {
+	font-family: ucFont;
+	font-size: 23px;
+	text-align: center;
+	margin-top: 5%;
+	margin-bottom: 3%
+}
