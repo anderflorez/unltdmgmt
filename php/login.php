@@ -1,5 +1,9 @@
 <?php
 	require_once('connection.php');
+	$username = "";
+	if (isset($_POST['username'])) {
+		$username = $_POST['username'];
+	}
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +39,7 @@
 						<form action="login.php" method="post">
 							<fieldset>
 								<div class="form-group">
-									<input type="text" name="email" class="form-control" placeholder="Username or E-mail" autofocus>
+									<input type="text" name="username" class="form-control" placeholder="Username or E-mail" value="<?php echo $username; ?>" autofocus>
 								</div>
 								<div class="form-group">
 									<input type="password" name="password" class="form-control" placeholder="Password">
@@ -46,12 +50,12 @@
 									</label>
 								</div>
 								<div class="form-group">
-									<input class="form-control btn btn-lg btn-success btn-block" type="submit" name="login" value="Login">
+									<input id="login" class="form-control btn btn-lg btn-success btn-block" type="submit" name="login" value="Login">
 								</div>
 								<div class="form-group pull-right text-danger">
 									<a href="http://unlimitedcompanies.com/uecweb/v1.0/">Forgot password</a>
 								</div>
-							</fieldset>							
+							</fieldset>
 						</form>
 					</div>
 				</div>
@@ -61,25 +65,33 @@
 
 	<?php
 		if (isset($_POST["login"])) {
-			$email = mysqli_real_escape_string($db, $_POST['email']);
+			$username = mysqli_real_escape_string($db, $_POST['username']);
 			$password = mysqli_real_escape_string($db, $_POST['password']);			
-			$sql = "SELECT username, password FROM users WHERE username = '$email'";
+			$sql = "SELECT username, password FROM users WHERE username = '$username'";
 			$result = mysqli_query($db, $sql);
 			$rows = mysqli_num_rows($result);
 			$result = mysqli_fetch_assoc($result);
+			$wrongCredentials = '
+				<div class="container">
+					<div class="row">
+						<div class="well well-sm col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8">
+							<h4 class="text-danger text-center">Incorrect username or password. Please try again!</h4>
+						</div>
+					</div>
+				</div>';
 
 			if ($rows == 1) {
 				$pass = $result['password'];
 				if (password_verify($password, $pass)) {
 					$_SESSION['loginUser'] = $username;
-					header("Location: http://unlimitedcompanies.com/uecweb/v1.0/");
+					header("Location: dashboard.php");
 				}
 				else {
-					echo "Incorrect username or password";
+					echo $wrongCredentials;
 				}
 			}
 			else {
-				echo "Incorrect username or password";
+				echo $wrongCredentials;
 			}
 		}
 	?>
@@ -98,5 +110,5 @@
 
 <?php
 	// Close connection
-	mysqli_close($db);
+	include('closeconn.php');
 ?>

@@ -1,4 +1,6 @@
 <?php 
+	ob_start();
+
 	$dbhost = "localhost";
 	$dbuser = "unltdmgmt";
 	$dbpass = "8359248";
