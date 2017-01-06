@@ -1,9 +1,14 @@
 <?php
 	require_once('connection.php');
 	$username = "";
-	if (isset($_POST['username'])) {
-		$username = $_POST['username'];
+	if (isset($_COOKIE["username"])) {
+		$username = $_COOKIE["username"];
 	}
+	else if (isset($_POST["username"])) {
+		$username = $_POST["username"];
+	}
+
+	$remember = isset($_COOKIE["remember"]) ? $_COOKIE["remember"] : "";
 ?>
 
 <!DOCTYPE html>
@@ -46,15 +51,22 @@
 								</div>
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="remember" value="Remember Me">Remember Me
+										<input type="checkbox" name="remember" value="<?php echo $remember; ?>" 
+											<?php 
+												if ($remember === "remember") {
+													echo "checked";
+												}
+											?>>Remember Me
 									</label>
 								</div>
 								<div class="form-group">
 									<input id="login" class="form-control btn btn-lg btn-success btn-block" type="submit" name="login" value="Login">
 								</div>
+								<!-- 
 								<div class="form-group pull-right text-danger">
-									<a href="http://unlimitedcompanies.com/uecweb/v1.0/">Forgot password</a>
+									<a href="#">Forgot password</a>
 								</div>
+								 -->
 							</fieldset>
 						</form>
 					</div>
@@ -66,7 +78,7 @@
 	<?php
 		if (isset($_POST["login"])) {
 			$username = mysqli_real_escape_string($db, $_POST['username']);
-			$password = mysqli_real_escape_string($db, $_POST['password']);			
+			$password = mysqli_real_escape_string($db, $_POST['password']);
 			$sql = "SELECT username, password FROM users WHERE username = '$username'";
 			$result = mysqli_query($db, $sql);
 			$rows = mysqli_num_rows($result);
@@ -83,6 +95,24 @@
 			if ($rows == 1) {
 				$pass = $result['password'];
 				if (password_verify($password, $pass)) {
+					
+					// Set cookie if remember is active
+					if (isset($_POST["remember"])) {
+						$cookieName = "username";
+						$cookieRemember = "remember";
+						$expire = time() + (60*60*24*365*10);
+						setcookie($cookieName, $username, $expire);
+						setcookie($cookieRemember, $cookieRemember, $expire);
+					}
+					else {
+						$cookieName = "username";
+						$cookieRemember = "remember";
+						$expire = time() - (60*60*24);
+						setcookie($cookieName, null, $expire);
+						setcookie($cookieRemember, null, $expire);
+					}
+
+					// Set session to keep user logged in
 					$_SESSION['loginUser'] = $username;
 					header("Location: dashboard.php");
 				}
