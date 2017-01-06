@@ -1,5 +1,7 @@
 <?php
 	require_once('connection.php');
+	session_start();
+
 	$username = "";
 	if (isset($_COOKIE["username"])) {
 		$username = $_COOKIE["username"];
@@ -79,7 +81,7 @@
 		if (isset($_POST["login"])) {
 			$username = mysqli_real_escape_string($db, $_POST['username']);
 			$password = mysqli_real_escape_string($db, $_POST['password']);
-			$sql = "SELECT username, password FROM users WHERE username = '$username'";
+			$sql = "SELECT userid, username, password FROM users WHERE username = '$username'";
 			$result = mysqli_query($db, $sql);
 			$rows = mysqli_num_rows($result);
 			$result = mysqli_fetch_assoc($result);
@@ -112,8 +114,8 @@
 						setcookie($cookieRemember, null, $expire);
 					}
 
-					// Set session to keep user logged in
-					$_SESSION['loginUser'] = $username;
+					// Set userid in session to keep user logged in
+					$_SESSION['userid'] = $result["userid"];
 					header("Location: dashboard.php");
 				}
 				else {

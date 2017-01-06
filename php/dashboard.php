@@ -1,5 +1,6 @@
 <?php
 	require_once('connection.php');
+	require_once('session.php');
 ?>
 
 <!DOCTYPE html>
@@ -21,11 +22,6 @@
 
 </head>
 <body>
-	<div>
-		<?php
-			print_r($_COOKIE);
-		?>
-	</div>
 
 	<!-- JQuery -->
 	<script type="text/javascript" src="../js/jquery-3.1.1.js"></script>
