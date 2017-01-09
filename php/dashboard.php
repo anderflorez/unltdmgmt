@@ -27,7 +27,7 @@
 <body>
 
 	<!-- Navigation -->
-	<nav class="navbar navbar-default navbar-fixed-top role="navigation">
+	<nav class="nav navbar navbar-default navbar-fixed-top role="navigation">
 		<!-- Brand and toggle for sidebar -->
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#sidebar">
@@ -71,8 +71,7 @@
 
 	<!-- Page Content -->
 	<div id="page-wrapper">
-	
-
+		
 	</div>
 
 	<!-- JQuery -->

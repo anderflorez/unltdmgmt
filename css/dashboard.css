@@ -17,6 +17,21 @@
 	height: 40px;
 }
 
+.sidebar-nav {
+	border-right: 1px solid #E7E7E7;
+	background-color: #F8F8F8;
+}
+
+#page-wrapper {
+	position: inherit;
+	margin: 100px 0 0 0;
+	padding: 0 10px;
+	border: none;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: #FFFFFF;
+}
+
 @media (min-width: 768px) {
 	.sidebar-nav {
 		position: fixed;
@@ -28,11 +43,22 @@
 		overflow-x: hidden;
 		bottom: 0;
 		padding-bottom: 40px;
+		
 	}
 
 	.sidebar-nav > li > a {
 		width: 225px;
 	}
+
+	#page-wrapper {
+		margin: 50px 0 0 225px;
+		padding: 0 0 0 0px;
+		border-left: 1px solid #E7E7E7;
+	}
+}
+
+.navbar-default {
+	display: block;
 }
 
 .top-nav {
