@@ -15,5 +15,18 @@
 			$_SESSION['company'] = $result['company'];
 			$_SESSION['status'] = $result['status'];
 		}
+		else {
+			echo '
+				<div class="container">
+					<div class="row">
+						<div class="well well-sm col-xs-12">
+							<h4 class="text-danger text-center">There has been an error. Unable to load user information</h4>
+						</div>
+					</div>
+				</div>';
+		}
+	}
+	else {
+		header("location: login.php");
 	}
 ?>
