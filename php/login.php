@@ -28,7 +28,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 
 	<!-- Custom CSS -->
-	<link rel="stylesheet" type="text/css" href="../css/dashboard.css">
+	<link rel="stylesheet" type="text/css" href="../css/unltdmgmt.css">
 
 </head>
 <body>
@@ -135,7 +135,7 @@
 	<script type="text/javascript" src="../js/bootstrap.js"></script>
 
 	<!-- Custom Javascript -->
-	<script type="text/javascript" src="../js/dashboard.js"></script>
+	<script type="text/javascript" src="../js/unltdmgmt.js"></script>
 
 </body>
 </html>

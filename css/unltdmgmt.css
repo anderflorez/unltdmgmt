@@ -17,6 +17,14 @@
 	height: 40px;
 }
 
+.top-nav {
+	padding: 0 15px;
+}
+
+.top-nav > li > a {
+	padding: 15px 15px;
+}
+
 .sidebar-nav {
 	border-right: 1px solid #E7E7E7;
 	background-color: #F8F8F8;
@@ -61,8 +69,18 @@
 	display: block;
 }
 
-.top-nav {
-	padding: 0 15px;
+.navbar-default .navbar-nav > li > a {
+	color: #337AB7;
+}
+
+.navbar-default .navbar-nav > li > a,
+.navbar-default .navbar-nav > li > a: hover,
+.navbar-default .navbar-nav > li > a: focus {
+	color: #337AB7;
+}
+
+.navbar-default .navbar-nav .active > a {
+	color: #337AB7;
 }
 
 .sidebar-nav li {
