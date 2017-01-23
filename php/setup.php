@@ -249,25 +249,6 @@
 	}
 
 
-	//Create table for zones
-	$sql = "CREATE TABLE IF NOT EXISTS zones (
-			zoneId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			zoneNumber INT UNSIGNED NOT NULL,
-			zoneName VARCHAR(50) NOT NULL,
-			zoneStatus VARCHAR(30) NOT NULL DEFAULT Planning,
-			projectId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (zoneId),
-			FOREIGN KEY (projectId) REFERENCES projects (projectId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table zones has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table zones: " . $db->error . "<br>";
-	}
-
-
 	//Create table projects
 	$sql = "CREATE TABLE IF NOT EXISTS projects (
 			projectId INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -283,7 +264,7 @@
 			projectZip VARCHAR(10) NULL,
 			customerId INT UNSIGNED NOT NULL,
 			PRIMARY KEY (projectId),
-			FOREIGN KEY (customerId) REFERENCES customers (customerId),
+			FOREIGN KEY (customerId) REFERENCES customers (customerId)
 			) ENGINE = InnoDB";
 
 	if ($db->query($sql) === TRUE) {
@@ -291,6 +272,25 @@
 	}
 	else {
 		echo "Error creating the table projects: " . $db->error . "<br>";
+	}
+
+
+	//Create table for zones
+	$sql = "CREATE TABLE IF NOT EXISTS zones (
+			zoneId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			zoneNumber INT UNSIGNED NOT NULL,
+			zoneName VARCHAR(50) NOT NULL,
+			zoneStatus VARCHAR(30) NOT NULL DEFAULT 'Planning',
+			projectId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (zoneId),
+			FOREIGN KEY (projectId) REFERENCES projects (projectId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table zones has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table zones: " . $db->error . "<br>";
 	}
 
 
@@ -457,7 +457,7 @@
 	$sql = "CREATE TABLE IF NOT EXISTS materialCategories (
 			materialCategoryId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			materialCategoryName VARCHAR(50) NOT NULL,
-			PRIMARY KEY (materialCategorieId)
+			PRIMARY KEY (materialCategoryId)
 			) ENGINE = InnoDB";
 
 	if ($db->query($sql) === TRUE) {
@@ -536,7 +536,7 @@
 			materialOrders_vendors_Award TINYINT(1) NOT NULL DEFAULT 0,
 			PRIMARY KEY (materialOrders_vendors_Id),
 			FOREIGN KEY (materialOrderId) REFERENCES materialOrders (materialOrderId),
-			FOREIGN KEY (vendorId) REFERENCES vendors (vendorId),
+			FOREIGN KEY (vendorId) REFERENCES vendors (vendorId)
 			) ENGINE = InnoDB";
 
 	if ($db->query($sql) === TRUE) {
@@ -581,7 +581,7 @@
 			materialBuyoutObservations TEXT NULL,
 			projectId INT UNSIGNED NOT NULL,
 			PRIMARY KEY (materialBuyoutId),
-			FOREIGN KEY (projectId) REFERENCES projects (projectId),
+			FOREIGN KEY (projectId) REFERENCES projects (projectId)
 			) ENGINE = InnoDB";
 
 	if ($db->query($sql) === TRUE) {
