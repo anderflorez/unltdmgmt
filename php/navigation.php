@@ -1,3 +1,7 @@
+<?php
+	require_once('session.php');
+?>
+
 <!-- Navigation -->
 <nav class="nav navbar navbar-default navbar-fixed-top role="navigation">
 	<!-- Brand and toggle for sidebar -->
@@ -23,14 +27,14 @@
 					<a href="#"><i class="fa fa-fw fa-users"></i> User Management </a>
 				</li>
 				<li>
-					<a href="#"><i class="fa fa-fw fa-unlock-alt"></i> Role Management </a>
+					<a href="roles.php"><i class="fa fa-fw fa-unlock-alt"></i> Role Management </a>
 				</li>
 				<li>
 					<a href="#"><i class="fa fa-fw fa-bar-chart"></i> App Statistics </a>
 				</li>
 				<li class="divider"></li>
 				<li>
-					<a href="#"><i class="fa fa-fw fa-sign-out"></i> Log Out </a>
+					<a href="logout.php"><i class="fa fa-fw fa-sign-out"></i> Log Out </a>
 				</li>
 			</ul>
 		</li>

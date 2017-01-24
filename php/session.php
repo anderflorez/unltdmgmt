@@ -8,7 +8,7 @@
 		$result = mysqli_fetch_assoc($result);
 
 		if ($rows === 1) {
-			$_SESSION['username'] = $result['username'];
+			$_SESSION['userName'] = $result['firstName'];
 			$_SESSION['email'] = $result['email'];
 			$_SESSION['firstName'] = $result['firstName'];
 			$_SESSION['lastName'] = $result['lastName'];

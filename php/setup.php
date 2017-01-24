@@ -275,25 +275,6 @@
 	}
 
 
-	//Create table for zones
-	$sql = "CREATE TABLE IF NOT EXISTS zones (
-			zoneId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			zoneNumber INT UNSIGNED NOT NULL,
-			zoneName VARCHAR(50) NOT NULL,
-			zoneStatus VARCHAR(30) NOT NULL DEFAULT 'Planning',
-			projectId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (zoneId),
-			FOREIGN KEY (projectId) REFERENCES projects (projectId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table zones has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table zones: " . $db->error . "<br>";
-	}
-
-
 	//Create table ITBs
 	$sql = "CREATE TABLE IF NOT EXISTS itbs (
 			itbId INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -432,6 +413,25 @@
 	}
 	else {
 		echo "Error creating the table projectBudget_costCodes: " . $db->error . "<br>";
+	}
+
+
+	//Create table for zones
+	$sql = "CREATE TABLE IF NOT EXISTS zones (
+			zoneId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			zoneNumber INT UNSIGNED NOT NULL,
+			zoneName VARCHAR(50) NOT NULL,
+			zoneStatus VARCHAR(30) NOT NULL DEFAULT 'Planning',
+			projectId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (zoneId),
+			FOREIGN KEY (projectId) REFERENCES projects (projectId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table zones has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table zones: " . $db->error . "<br>";
 	}
 
 
@@ -773,7 +773,7 @@
 			materialBuyouts_vendors_Id INT UNSIGNED NULL,
 			lightingBuyouts_vendors_Id INT UNSIGNED NULL,
 			PRIMARY KEY (quoteId),
-			FOREIGN KEY (rfpId) REFERENCES unltdmgmt.rfps (rfpId)
+			FOREIGN KEY (rfpId) REFERENCES unltdmgmt.rfps (rfpId),
 			FOREIGN KEY (materialBuyouts_vendors_Id) REFERENCES materialBuyouts_vendors (materialBuyouts_vendors_Id),
 			FOREIGN KEY (materialOrders_vendors_Id) REFERENCES materialOrders_vendors (materialOrders_vendors_Id),
 			FOREIGN KEY (lightingBuyouts_vendors_Id) REFERENCES lightingBuyouts_vendors (lightingBuyouts_vendors_Id)
@@ -834,7 +834,7 @@
 	//Create a table for time sheets
 	$sql = "CREATE TABLE IF NOT EXISTS timeSheets (
 			timeSheetsId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			timeSheetLunchHours TIME NOT NULL DEFAULT 00:30:00,
+			timeSheetLunchHours TIME NOT NULL DEFAULT '00:30:00',
 			timeSheetRealStartTime TIMESTAMP NOT NULL,
 			timeSheetStartTime TIME NOT NULL,
 			timeSheetRealEndTime TIMESTAMP NOT NULL,
@@ -969,10 +969,10 @@
 			eServiceDispatchObservations VARCHAR(255) NULL,
 			eServiceDispatchClockin DATETIME NULL,
 			eServiceDispatchClockout DATETIME NULL,
-			eServiceDispatchClockinLatitude DOUBLE(3,15) NULL,
-			eServiceDispatchClockinLongitude DOUBLE(3,15) NULL,
-			eServiceDispatchClockoutLatitude DOUBLE(3,15) NULL,
-			eServiceDispatchClockoutLongitude DOUBLE(3,15) NULL,
+			eServiceDispatchClockinLatitude DOUBLE NULL,
+			eServiceDispatchClockinLongitude DOUBLE NULL,
+			eServiceDispatchClockoutLatitude DOUBLE NULL,
+			eServiceDispatchClockoutLongitude DOUBLE NULL,
 			eServiceDispatchEndDay TINYINT(1) NOT NULL DEFAULT 0,
 			eServiceDispatchParts TINYINT(1) NOT NULL DEFAULT 0,
 			eServiceRequestId INT UNSIGNED NOT NULL,
@@ -1070,10 +1070,10 @@
 			avServiceDispatchObservations VARCHAR(255) NULL,
 			avServiceDispatchClockin DATETIME NULL,
 			avServiceDispatchClockout DATETIME NULL,
-			avServiceDispatchClockinLatitude DOUBLE(3,15) NULL,
-			avServiceDispatchClockinLongitude DOUBLE(3,15) NULL,
-			avServiceDispatchClockoutLatitude DOUBLE(3,15) NULL,
-			avServiceDispatchClockoutLongitude DOUBLE(3,15) NULL,
+			avServiceDispatchClockinLatitude DOUBLE NULL,
+			avServiceDispatchClockinLongitude DOUBLE NULL,
+			avServiceDispatchClockoutLatitude DOUBLE NULL,
+			avServiceDispatchClockoutLongitude DOUBLE NULL,
 			avServiceDispatchEndDay TINYINT(1) NOT NULL DEFAULT 0,
 			avServiceDispatchParts TINYINT(1) NOT NULL DEFAULT 0,
 			avServiceRequestId INT UNSIGNED NOT NULL,
@@ -1281,7 +1281,7 @@
 			testQuestionAnswerD VARCHAR(255) NOT NULL,
 			testQuestionCorrect CHAR(1) NOT NULL,
 			testQuestionType VARCHAR(10) NOT NULL,
-			PRIMARY KEY (testQuestionId))
+			PRIMARY KEY (testQuestionId)
 			) ENGINE = InnoDB";
 
 	if ($db->query($sql) === TRUE) {

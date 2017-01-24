@@ -28,8 +28,17 @@
 	<?php include('navigation.php'); ?>
 
 	<!-- Page Content -->
-	<div id="page-wrapper">
-		
+	<div id="page-wrapper">		
+		<form>
+			<div class="form-group">
+				<div class="input-group">
+					<input type="text" name="search" class="form-control" placeholder="Search Roles">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">Search</button>
+					</span>
+				</div>
+			</div>
+		</form>
 	</div>
 
 	<!-- JQuery -->

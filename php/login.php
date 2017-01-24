@@ -2,6 +2,10 @@
 	require_once('connection.php');
 	session_start();
 
+	if (isset($_SESSION['userid'])) {
+		header("Location: dashboard.php");
+	}
+
 	$username = "";
 	if (isset($_COOKIE["username"])) {
 		$username = $_COOKIE["username"];

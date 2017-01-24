@@ -3,6 +3,10 @@
 	src: url(../fonts/TrajanPro-Bold.ttf);
 }
 
+body {
+	width: 100%;
+}
+
 #logintitle,
 #logintitle > h3 {
 	font-family: ucFont;
@@ -34,7 +38,7 @@
 #page-wrapper {
 	position: inherit;
 	margin: 100px 0 0 0;
-	padding: 0 10px;
+	padding: 10px 0 0 10px;
 	border: none;
 	width: 100%;
 	box-sizing: border-box;
@@ -45,11 +49,9 @@
 	.sidebar-nav {
 		position: fixed;
 		top: 51px;
-		left: 225px;
 		width: 225px;
-		margin-left: -225px;
-		overflow-y: auto;
-		overflow-x: hidden;
+		/*overflow-y: auto;
+		overflow-x: hidden;*/
 		bottom: 0;
 		padding-bottom: 40px;
 		
@@ -60,8 +62,8 @@
 	}
 
 	#page-wrapper {
-		margin: 50px 0 0 225px;
-		padding: 0 0 0 0px;
+		margin: 51px 0 0 225px;
+		padding: 0;
 	}
 }
 
@@ -124,4 +126,9 @@
 
 .sidebar-sm li {
 	border-bottom: 1px solid #E7E7E7;
+}
+
+#page-wrapper {
+	background-color: black;
+	height: 300px;
 }
