@@ -25,21 +25,21 @@
 
 </head>
 <body>
-	<?php include('navigation.php'); ?>
 
 	<!-- Page Content -->
-	<div id="page-wrapper">		
-		<form>
-			<div class="form-group">
-				<div class="input-group">
-					<input type="text" name="search" class="form-control" placeholder="Search Roles">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">Search</button>
-					</span>
-				</div>
+	<header>
+		<h1 class="page-header">Roles</h1><hr>
+	</header>
+	<form>
+		<div class="form-group">
+			<div class="input-group">
+				<input type="text" name="search" class="form-control" placeholder="Search Roles">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">Search</button>
+				</span>
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
 
 	<!-- JQuery -->
 	<script type="text/javascript" src="../js/jquery-3.1.1.js"></script>

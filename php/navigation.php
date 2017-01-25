@@ -1,12 +1,14 @@
 <?php
-	require_once('session.php');
+	require_once('connection.php');
+	require_once('functions.php');
+	checkSession();
 ?>
 
 <!-- Navigation -->
 <nav class="nav navbar navbar-default navbar-fixed-top role="navigation">
 	<!-- Brand and toggle for sidebar -->
 	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#sidebar">
+		<button type="button" class="sidebar-toggle">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
@@ -18,7 +20,9 @@
 	<!-- Top Menu Items -->
 	<ul class="nav navbar-right top-nav">
 		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-user"></i> John Doe <b class="fa fa-caret-down"></b></a>
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-user"></i> 
+				<?php echo $_SESSION['firstName'] . " " . $_SESSION['lastName']; ?> <b class="fa fa-caret-down"></b>
+			</a>
 			<ul class="dropdown-menu">
 				<li>
 					<a href="#"><i class="fa fa-fw fa-user"></i> Profile </a>

@@ -1,9 +1,11 @@
 <?php
 	require_once('connection.php');
+	require_once('functions.php');
 	session_start();
 
-	if (isset($_SESSION['userid'])) {
+	if (isset($_SESSION['userId'])) {
 		header("Location: dashboard.php");
+		exit("Redirecting...");
 	}
 
 	$username = "";
@@ -119,7 +121,7 @@
 					}
 
 					// Set userid in session to keep user logged in
-					$_SESSION['userid'] = $result["userid"];
+					$_SESSION['userId'] = $result["userid"];
 					header("Location: dashboard.php");
 				}
 				else {
