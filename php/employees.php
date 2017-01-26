@@ -31,7 +31,9 @@
 
 	<!-- Page Content -->
 	<div class="page-wrapper">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eget cursus urna, vitae mollis magna. In at nisi dapibus, venenatis erat id, suscipit dolor. Vivamus fringilla felis sed ante consequat dictum ut nec dui. Fusce vel sagittis nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce eget libero porttitor, faucibus urna at, tempor dolor. Quisque sit amet venenatis ex. Ut quis auctor quam. Proin sit amet diam porttitor, eleifend mi et, congue arcu. Cras justo purus, blandit eu turpis eu, euismod porttitor arcu. Donec facilisis quam nec leo lobortis condimentum. Proin eget egestas ex, at accumsan turpis. Nullam risus tortor, sagittis non purus et, aliquet blandit massa. Maecenas id tortor vel ex luctus bibendum et id lectus. Donec cursus posuere dolor, eu viverra ligula consectetur nec.
+		<header>
+			<h1 class="page-header">Company Employees</h1>
+		</header>
 	</div>
 
 	<!-- JQuery -->

@@ -121,7 +121,7 @@
 					}
 
 					// Set userid in session to keep user logged in
-					$_SESSION['userId'] = $result["userid"];
+					$_SESSION['userId'] = $result['userid'];
 					header("Location: dashboard.php");
 				}
 				else {

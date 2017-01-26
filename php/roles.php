@@ -1,6 +1,8 @@
 <?php
 	require_once('connection.php');
-	require_once('session.php');
+	require_once('functions.php');
+	session_start();
+	checkSession($db);
 ?>
 
 <!DOCTYPE html>
@@ -25,21 +27,24 @@
 
 </head>
 <body>
+	<?php include('navigation.php'); ?>
 
 	<!-- Page Content -->
-	<header>
-		<h1 class="page-header">Roles</h1><hr>
-	</header>
-	<form>
-		<div class="form-group">
-			<div class="input-group">
-				<input type="text" name="search" class="form-control" placeholder="Search Roles">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">Search</button>
-				</span>
+	<div class="page-wrapper">
+		<header>
+			<h1 class="page-header">Roles</h1>
+		</header>
+		<form>
+			<div class="form-group">
+				<div class="input-group">
+					<input type="text" name="search" class="form-control" placeholder="Search Roles">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">Search</button>
+					</span>
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>	
+	</div>
 
 	<!-- JQuery -->
 	<script type="text/javascript" src="../js/jquery-3.1.1.js"></script>

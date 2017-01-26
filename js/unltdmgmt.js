@@ -26,4 +26,14 @@ $(document).ready(function() {
 			return false;
 		});
 	}
+
+	var filename = function() {
+		var url = document.location.href;
+		url = url.substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"));
+		url = url.substring(0, (url.indexOf("?") == -1) ? url.length : url.indexOf("?"));
+		url = url.substring(0, (url.indexOf(".") == -1) ? url.length : url.indexOf("."));
+		url = url.substring(url.lastIndexOf("/") + 1, url.length);
+		return url;
+	}
+	$("#" + filename()).addClass("active");
 });

@@ -47,7 +47,7 @@
 	*/
 	$adminpass = password_hash("admin", PASSWORD_DEFAULT);
 	$sql = "INSERT INTO users (username, email, password, firstName, lastName, company, status)
-			VALUES ('administrator', ' ', '{$adminpass}', ' ', ' ', 'Unlimited Companies', 'active')";
+			VALUES ('administrator', ' ', '{$adminpass}', 'Administrator', ' ', 'Unlimited Companies', 'active')";
 	if ($db->query($sql) === TRUE) {
 		echo "The administrator user has been created successfully<br>";
 	}
@@ -416,498 +416,6 @@
 	}
 
 
-	//Create table for zones
-	$sql = "CREATE TABLE IF NOT EXISTS zones (
-			zoneId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			zoneNumber INT UNSIGNED NOT NULL,
-			zoneName VARCHAR(50) NOT NULL,
-			zoneStatus VARCHAR(30) NOT NULL DEFAULT 'Planning',
-			projectId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (zoneId),
-			FOREIGN KEY (projectId) REFERENCES projects (projectId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table zones has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table zones: " . $db->error . "<br>";
-	}
-
-
-	//Create table zone bugdget
-	$sql = "CREATE TABLE IF NOT EXISTS zoneBudgetItems (
-			zoneBudgetItemId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			zoneBudgetItemHours DOUBLE(7,2) UNSIGNED NULL,
-			zoneBudgetItemMaterialCost DOUBLE(10,2) UNSIGNED NULL,
-			zoneId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (zoneBudgetItemId),
-			FOREIGN KEY (zoneId) REFERENCES zones (zoneId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table zoneBudgetItems has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table zoneBudgetItems: " . $db->error . "<br>";
-	}
-
-
-	//Create a table for material categories
-	$sql = "CREATE TABLE IF NOT EXISTS materialCategories (
-			materialCategoryId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialCategoryName VARCHAR(50) NOT NULL,
-			PRIMARY KEY (materialCategoryId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialCategories has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialCategories: " . $db->error . "<br>";
-	}
-
-
-	//Create a table for material subcategories
-	$sql = "CREATE TABLE IF NOT EXISTS materialSubcategories (
-			materialSubcategoryId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialSubcategoryName VARCHAR(50) NOT NULL,
-			materialCategoryId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (materialSubcategoryId),
-			FOREIGN KEY (materialCategoryId) REFERENCES materialCategories (materialCategoryId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialSubcategories has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialSubcategories: " . $db->error . "<br>";
-	}
-
-
-	//Create a table for material item descriptions
-	$sql = "CREATE TABLE IF NOT EXISTS materialDescriptions (
-			materialDescriptionId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialDescriptionItem VARCHAR(50) NOT NULL,
-			materialDescriptionUnit VARCHAR(15) NULL,
-			materialSubcategoryId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (materialDescriptionId),
-			FOREIGN KEY (materialSubcategoryId) REFERENCES materialSubcategories (materialSubcategoryId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialDescriptions has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialDescriptions: " . $db->error . "<br>";
-	}
-
-
-	//Create a table for material orders
-	$sql = "CREATE TABLE IF NOT EXISTS materialOrders (
-			materialOrderId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialOrderArea VARCHAR(50) NOT NULL,
-			materialOrderSentVendor TINYINT(1) NOT NULL DEFAULT 0,
-			materialOrderSentPM TINYINT(1) NOT NULL DEFAULT 0,
-			materialOrderDate DATE NOT NULL,
-			materialOrderObservations TEXT NULL,
-			projectId INT UNSIGNED NULL,
-			eServiceRequestId INT UNSIGNED NULL,
-			avServiceRequestId INT UNSIGNED NULL,
-			PRIMARY KEY (materialOrderId),
-			FOREIGN KEY (projectId) REFERENCES projects (projectId),
-			FOREIGN KEY (eServiceRequestId) REFERENCES eServiceRequests (eServiceRequestId),
-			FOREIGN KEY (avServiceRequestId) REFERENCES avServiceRequests (avServiceRequestId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialOrders has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialOrders: " . $db->error . "<br>";
-	}
-
-
-	//Create a table to hold the material order vendors
-	$sql = "CREATE TABLE IF NOT EXISTS materialOrders_vendors (
-			materialOrders_vendors_Id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialOrderId INT UNSIGNED NOT NULL,
-			vendorId INT UNSIGNED NOT NULL,
-			materialOrders_vendors_Award TINYINT(1) NOT NULL DEFAULT 0,
-			PRIMARY KEY (materialOrders_vendors_Id),
-			FOREIGN KEY (materialOrderId) REFERENCES materialOrders (materialOrderId),
-			FOREIGN KEY (vendorId) REFERENCES vendors (vendorId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialOrders_vendors has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialOrders_vendors: " . $db->error . "<br>";
-	}
-
-
-	//Create a table for material order items
-	$sql = "CREATE TABLE IF NOT EXISTS materialOrderListItems (
-			materialOrderListItemId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialOrderListItemQuantity INT UNSIGNED NOT NULL DEFAULT 0,
-			materialOrderListItemDelivered INT UNSIGNED NOT NULL DEFAULT 0,
-			materialOrderListItemComments VARCHAR(255) NULL,
-			materialOrderId INT UNSIGNED NOT NULL,
-			materialDescriptionId INT UNSIGNED NOT NULL,
-			costCodeId INT UNSIGNED NOT NULL,
-			zoneId INT UNSIGNED NULL,
-			PRIMARY KEY (materialOrderListItemId),
-			FOREIGN KEY (materialOrderId) REFERENCES materialOrders (materialOrderId),
-			FOREIGN KEY (materialDescriptionId) REFERENCES materialDescriptions (materialDescriptionId),
-			FOREIGN KEY (costCodeId) REFERENCES costCodes (costCodesId),
-			FOREIGN KEY (zoneId) REFERENCES zones (zoneId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialOrderListItems has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialOrderListItems: " . $db->error . "<br>";
-	}
-
-
-	// Create a table for material buyouts
-	$sql = "CREATE TABLE IF NOT EXISTS materialBuyouts (
-			materialBuyoutId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialBuyoutArea VARCHAR(50) NOT NULL,
-			materialBuyoutSentVendor TINYINT(1) NOT NULL DEFAULT 0,
-			materialBuyoutSentPM TINYINT(1) NOT NULL DEFAULT 0,
-			materialBuyoutObservations TEXT NULL,
-			projectId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (materialBuyoutId),
-			FOREIGN KEY (projectId) REFERENCES projects (projectId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialBuyouts has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialBuyouts: " . $db->error . "<br>";
-	}
-
-
-	//Create a table to assign vendors to the material buyout
-	$sql = "CREATE TABLE IF NOT EXISTS materialBuyouts_vendors (
-			materialBuyouts_vendors_Id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialBuyoutId INT UNSIGNED NOT NULL,
-			vendorId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (materialBuyouts_vendors_Id),
-			FOREIGN KEY (materialBuyoutId) REFERENCES materialBuyouts (materialBuyoutId),
-			FOREIGN KEY (vendorId) REFERENCES vendors (vendorId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialBuyouts_vendors has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialBuyouts_vendors: " . $db->error . "<br>";
-	}
-
-
-	// Create a table to hold the material buyout items
-	$sql = "CREATE TABLE IF NOT EXISTS materialBuyoutListItems (
-			materialBuyoutListItemId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialBuyoutListItemQuantity INT UNSIGNED NOT NULL DEFAULT 0,
-			materialBuyoutListItemDelivered INT UNSIGNED NOT NULL DEFAULT 0,
-			materialBuyoutListItemComments VARCHAR(255) NULL,
-			materialBuyoutId INT UNSIGNED NOT NULL,
-			materialDescriptionId INT UNSIGNED NOT NULL,
-			costCodeId INT UNSIGNED NOT NULL,
-			zoneId INT UNSIGNED NULL,
-			PRIMARY KEY (materialBuyoutListItemId),
-			FOREIGN KEY (materialBuyoutId) REFERENCES materialBuyouts (materialBuyoutId),
-			FOREIGN KEY (materialDescriptionId) REFERENCES materialDescriptions (materialDescriptionId),
-			FOREIGN KEY (costCodeId) REFERENCES costCodes (costCodesId),
-			FOREIGN KEY (zoneId) REFERENCES zones (zoneId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialBuyoutListItems has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialBuyoutListItems: " . $db->error . "<br>";
-	}
-
-
-	// Create a table for the material buyout releases
-	$sql = "CREATE TABLE IF NOT EXISTS materialBuyoutReleases (
-			materialBuyoutReleaseId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			materialBuyoutReleaseNumber TINYINT UNSIGNED NOT NULL UNIQUE,
-			materialBuyoutReleaseQuantity INT UNSIGNED NOT NULL,
-			materialBuyoutReleaseDate DATE NULL,
-			materialBuyoutReleaseBackOrder INT UNSIGNED NULL,
-			materialBuyoutId INT UNSIGNED NOT NULL,
-			materialBuyoutListItemId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (materialBuyoutReleaseId),
-			FOREIGN KEY (materialBuyoutId) REFERENCES unltdmgmt.materialBuyouts (materialBuyoutId),
-			FOREIGN KEY (materialBuyoutListItemId) REFERENCES unltdmgmt.materialBuyoutListItems (materialBuyoutListItemId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table materialBuyoutReleases has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table materialBuyoutReleases: " . $db->error . "<br>";
-	}
-
-
-	// Create a table for lighting buyouts
-	$sql = "CREATE TABLE IF NOT EXISTS lightingBuyouts (
-			lightingBuyoutId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			lightingBuyoutDescription VARCHAR(50) NOT NULL,
-			lightingBuyoutStatus VARCHAR(20) NULL,
-			lightingBuyoutSentVendor TINYINT(1) NOT NULL DEFAULT 0,
-			lightingBuyoutSentPM TINYINT(1) NOT NULL DEFAULT 0,
-			lightingBuyoutObservations TEXT NULL,
-			projectId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (lightingBuyoutId),
-			FOREIGN KEY (projectId) REFERENCES projects (projectId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table lightingBuyouts has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table lightingBuyouts: " . $db->error . "<br>";
-	}
-
-
-	// Create a table to assign vendors to the lighting buyouts
-	$sql = "CREATE TABLE IF NOT EXISTS lightingBuyouts_vendors (
-			lightingBuyouts_vendors_Id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			lightingBuyoutId INT UNSIGNED NOT NULL,
-			vendorId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (lightingBuyouts_vendors_Id),
-			FOREIGN KEY (lightingBuyoutId) REFERENCES lightingBuyouts (lightingBuyoutId),
-			FOREIGN KEY (vendorId) REFERENCES vendors (vendorId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table lightingBuyouts_vendors has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table lightingBuyouts_vendors: " . $db->error . "<br>";
-	}
-
-
-	// Create a table for lighting fixtures
-	$sql = "CREATE TABLE IF NOT EXISTS lightingFixtures (
-			lightingFixtureId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			lightingFixtureQuantity INT UNSIGNED NOT NULL,
-			lightingFixtureUnit VARCHAR(10) NULL,
-			lightingFixtureType VARCHAR(50) NULL,
-			lightingFixtureManufacturer VARCHAR(50) NULL,
-			lightingFixtureDescription VARCHAR(128) NULL,
-			lightingFixtureCatalogNumber VARCHAR(50) NULL,
-			lightingFixtureAlternative TINYINT(1) NOT NULL DEFAULT 0,
-			lightingFixtureNotes VARCHAR(255) NULL,
-			lightingFixturePicture VARCHAR(255) NULL,
-			lightingBuyoutId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (lightingFixtureId),
-			FOREIGN KEY (lightingBuyoutId) REFERENCES unltdmgmt.lightingBuyouts (lightingBuyoutId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table lightingFixtures has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table lightingFixtures: " . $db->error . "<br>";
-	}
-
-
-	// Create a table for lighting fixture parts
-	$sql = "CREATE TABLE IF NOT EXISTS lightingFixtureParts (
-			lightingFixturePartId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			lightingFixturePartCategory VARCHAR(15) NOT NULL,
-			lightingFixturePartType VARCHAR(20) NULL,
-			lightingFixturePartQuantity INT UNSIGNED NOT NULL,
-			lightingFixtureId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (lightingFixturePartId),
-			FOREIGN KEY (lightingFixtureId) REFERENCES lightingFixtures (lightingFixtureId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table lightingFixtureParts has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table lightingFixtureParts: " . $db->error . "<br>";
-	}
-
-
-	// Create a table for lighting releases
-	$sql = "CREATE TABLE IF NOT EXISTS lightingReleases (
-			lightingReleaseId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			lightingReleaseNumber INT UNSIGNED NOT NULL,
-			lightingReleaseWholeFixture INT UNSIGNED NULL,
-			lightingFixtureId INT UNSIGNED NOT NULL,
-			lightingFixturePartId INT UNSIGNED NULL,
-			PRIMARY KEY (lightingReleaseId),
-			FOREIGN KEY (lightingFixtureId) REFERENCES lightingFixtures (lightingFixtureId),
-			FOREIGN KEY (lightingFixturePartId) REFERENCES lightingFixtureParts (lightingFixturePartId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table lightingReleases has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table lightingReleases: " . $db->error . "<br>";
-	}
-
-
-	//Create a table for quotes
-	$sql = "CREATE TABLE IF NOT EXISTS quotes (
-			quoteId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			quotePO INT UNSIGNED NULL,
-			quoteObservations TEXT NULL,
-			quoteDecision CHAR(1) NOT NULL DEFAULT 'N',
-			quoteAmount INT NULL,
-			quoteFile VARCHAR(255) NULL,
-			rfpId INT UNSIGNED NOT NULL,
-			materialOrders_vendors_Id INT UNSIGNED NULL,
-			materialBuyouts_vendors_Id INT UNSIGNED NULL,
-			lightingBuyouts_vendors_Id INT UNSIGNED NULL,
-			PRIMARY KEY (quoteId),
-			FOREIGN KEY (rfpId) REFERENCES unltdmgmt.rfps (rfpId),
-			FOREIGN KEY (materialBuyouts_vendors_Id) REFERENCES materialBuyouts_vendors (materialBuyouts_vendors_Id),
-			FOREIGN KEY (materialOrders_vendors_Id) REFERENCES materialOrders_vendors (materialOrders_vendors_Id),
-			FOREIGN KEY (lightingBuyouts_vendors_Id) REFERENCES lightingBuyouts_vendors (lightingBuyouts_vendors_Id)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table quotes has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table quotes: " . $db->error . "<br>";
-	}
-
-
-	// Create a table for packing slips
-	$sql = "CREATE TABLE IF NOT EXISTS packingSlips (
-			packingSlipsId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			packingSlipFile VARCHAR(255) NOT NULL,
-			packingSlipReviewed TINYINT(1) NOT NULL DEFAULT 0,
-			materialOrderId INT UNSIGNED NULL,
-			materialBuyoutReleaseId INT UNSIGNED NULL,
-			lightingReleaseId INT UNSIGNED NULL,
-			PRIMARY KEY (packingSlipsId),
-			FOREIGN KEY (materialOrderId) REFERENCES materialOrders (materialOrderId),
-			FOREIGN KEY (materialBuyoutReleaseId) REFERENCES materialBuyoutReleases (materialBuyoutReleaseId),
-			FOREIGN KEY (lightingReleaseId) REFERENCES lightingReleases (lightingReleaseId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table packingSlips has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table packingSlips: " . $db->error . "<br>";
-	}
-
-
-	// Create a table for file attachments
-	$sql = "CREATE TABLE IF NOT EXISTS fileAttachments (
-			fileAttachmentId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			fileAttachmentName VARCHAR(50) NULL,
-			fileAttachmentFile VARCHAR(225) NOT NULL,
-			materialOrderId INT UNSIGNED NULL,
-			materialBuyoutId INT UNSIGNED NULL,
-			dailyReportId INT UNSIGNED NULL,
-			PRIMARY KEY (fileAttachmentId),
-			FOREIGN KEY (materialOrderId) REFERENCES materialOrders (materialOrderId),
-			FOREIGN KEY (materialBuyoutId) REFERENCES materialBuyouts (materialBuyoutId),
-			FOREIGN KEY (dailyReportId) REFERENCES dailyReports (dailyReportId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table fileAttachments has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table fileAttachments: " . $db->error . "<br>";
-	}
-
-
-	//Create a table for time sheets
-	$sql = "CREATE TABLE IF NOT EXISTS timeSheets (
-			timeSheetsId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			timeSheetLunchHours TIME NOT NULL DEFAULT '00:30:00',
-			timeSheetRealStartTime TIMESTAMP NOT NULL,
-			timeSheetStartTime TIME NOT NULL,
-			timeSheetRealEndTime TIMESTAMP NOT NULL,
-			timeSheetEndTime TIME NOT NULL,
-			timeSheetClockinPic VARCHAR(255) NULL,
-			timeSheetClockoutPic VARCHAR(255) NULL,
-			projectId INT UNSIGNED NOT NULL,
-			employeeId INT UNSIGNED NOT NULL,
-			dailyReportId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (timeSheetsId),
-			FOREIGN KEY (projectId) REFERENCES projects (projectId),
-			FOREIGN KEY (employeeId) REFERENCES employees (employeeId),
-			FOREIGN KEY (dailyReportId) REFERENCES dailyReports (dailyReportId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table timeSheets has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table timeSheets: " . $db->error . "<br>";
-	}
-
-
-	//Create a table to assign cost codes and zones to the time sheets
-	$sql = "CREATE TABLE IF NOT EXISTS timeSheets_costCodes_zones (
-			timeSheets_costCode_zones_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			timeSheetId INT UNSIGNED NOT NULL,
-			costCodeId INT UNSIGNED NOT NULL,
-			zoneId INT UNSIGNED NULL,
-			timeSheetHoursWorked TIME NOT NULL,
-			PRIMARY KEY (timeSheets_costCode_zones_id),
-			FOREIGN KEY (timeSheetId) REFERENCES timeSheets (timeSheetsId),
-			FOREIGN KEY (costCodeId) REFERENCES costCodes (costCodesId),
-			FOREIGN KEY (zoneId) REFERENCES zones (zoneId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table timeSheets_costCodes_zones has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table timeSheets_costCodes_zones: " . $db->error . "<br>";
-	}
-
-
-	// Create a table for daily reports
-	$sql = "CREATE TABLE IF NOT EXISTS dailyReports (
-			dailyReportId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			dailyReportDate DATE NOT NULL,
-			dailyReportUecWorkers TINYINT NULL,
-			dailyReportPieceWorkers TINYINT NULL,
-			dailyReportSuperintComments TEXT NULL,
-			dailyReportManPowerSent TINYINT(1) NULL,
-			dailyReportRentalEquipment VARCHAR(255) NULL,
-			dailyReportTempLabor VARCHAR(255) NULL,
-			dailyReportSubcontractors VARCHAR(255) NULL,
-			dailyReportWeather VARCHAR(255) NULL,
-			dailyReportBackOrders VARCHAR(255) NULL,
-			dailyReportActivities TEXT NULL,
-			dailyReportDelays VARCHAR(255) NULL,
-			dailyReportExtraWork VARCHAR(255) NULL,
-			projectId INT UNSIGNED NOT NULL,
-			PRIMARY KEY (dailyReportId),
-			FOREIGN KEY (projectId) REFERENCES projects (projectId)
-			) ENGINE = InnoDB";
-
-	if ($db->query($sql) === TRUE) {
-		echo "Table dailyReports has been created successfully<br>";
-	}
-	else {
-		echo "Error creating the table dailyReports: " . $db->error . "<br>";
-	}
-
-
 	//Create a table for Electric Service Jobs
 	$sql = "CREATE TABLE IF NOT EXISTS eServiceJobs (
 			eServiceJobId INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -1109,6 +617,516 @@
 		echo "Error creating the table avServiceInvoices: " . $db->error . "<br>";
 	}
 
+
+	//Create table for zones
+	$sql = "CREATE TABLE IF NOT EXISTS zones (
+			zoneId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			zoneNumber INT UNSIGNED NOT NULL,
+			zoneName VARCHAR(50) NOT NULL,
+			zoneStatus VARCHAR(30) NOT NULL DEFAULT 'Planning',
+			projectId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (zoneId),
+			FOREIGN KEY (projectId) REFERENCES projects (projectId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table zones has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table zones: " . $db->error . "<br>";
+	}
+
+
+	//Create table zone bugdget
+	$sql = "CREATE TABLE IF NOT EXISTS zoneBudgetItems (
+			zoneBudgetItemId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			zoneBudgetItemHours DOUBLE(7,2) UNSIGNED NULL,
+			zoneBudgetItemMaterialCost DOUBLE(10,2) UNSIGNED NULL,
+			zoneId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (zoneBudgetItemId),
+			FOREIGN KEY (zoneId) REFERENCES zones (zoneId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table zoneBudgetItems has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table zoneBudgetItems: " . $db->error . "<br>";
+	}
+
+
+	//Create a table for material categories
+	$sql = "CREATE TABLE IF NOT EXISTS materialCategories (
+			materialCategoryId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialCategoryName VARCHAR(50) NOT NULL,
+			PRIMARY KEY (materialCategoryId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialCategories has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialCategories: " . $db->error . "<br>";
+	}
+
+
+	//Create a table for material subcategories
+	$sql = "CREATE TABLE IF NOT EXISTS materialSubcategories (
+			materialSubcategoryId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialSubcategoryName VARCHAR(50) NOT NULL,
+			materialCategoryId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (materialSubcategoryId),
+			FOREIGN KEY (materialCategoryId) REFERENCES materialCategories (materialCategoryId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialSubcategories has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialSubcategories: " . $db->error . "<br>";
+	}
+
+
+	//Create a table for material item descriptions
+	$sql = "CREATE TABLE IF NOT EXISTS materialDescriptions (
+			materialDescriptionId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialDescriptionItem VARCHAR(50) NOT NULL,
+			materialDescriptionUnit VARCHAR(15) NULL,
+			materialSubcategoryId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (materialDescriptionId),
+			FOREIGN KEY (materialSubcategoryId) REFERENCES materialSubcategories (materialSubcategoryId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialDescriptions has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialDescriptions: " . $db->error . "<br>";
+	}
+
+
+	//Create a table for material orders
+	$sql = "CREATE TABLE IF NOT EXISTS materialOrders (
+			materialOrderId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialOrderArea VARCHAR(50) NOT NULL,
+			materialOrderSentVendor TINYINT(1) NOT NULL DEFAULT 0,
+			materialOrderSentPM TINYINT(1) NOT NULL DEFAULT 0,
+			materialOrderDate DATE NOT NULL,
+			materialOrderObservations TEXT NULL,
+			projectId INT UNSIGNED NULL,
+			eServiceRequestId INT UNSIGNED NULL,
+			avServiceRequestId INT UNSIGNED NULL,
+			PRIMARY KEY (materialOrderId),
+			FOREIGN KEY (projectId) REFERENCES projects (projectId),
+			FOREIGN KEY (eServiceRequestId) REFERENCES eServiceRequests (eServiceRequestId),
+			FOREIGN KEY (avServiceRequestId) REFERENCES avServiceRequests (avServiceRequestId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialOrders has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialOrders: " . $db->error . "<br>";
+	}
+
+
+	//Create a table to hold the material order vendors
+	$sql = "CREATE TABLE IF NOT EXISTS materialOrders_vendors (
+			materialOrders_vendors_Id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialOrderId INT UNSIGNED NOT NULL,
+			vendorId INT UNSIGNED NOT NULL,
+			materialOrders_vendors_Award TINYINT(1) NOT NULL DEFAULT 0,
+			PRIMARY KEY (materialOrders_vendors_Id),
+			FOREIGN KEY (materialOrderId) REFERENCES materialOrders (materialOrderId),
+			FOREIGN KEY (vendorId) REFERENCES vendors (vendorId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialOrders_vendors has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialOrders_vendors: " . $db->error . "<br>";
+	}
+
+
+	//Create a table for material order items
+	$sql = "CREATE TABLE IF NOT EXISTS materialOrderListItems (
+			materialOrderListItemId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialOrderListItemQuantity INT UNSIGNED NOT NULL DEFAULT 0,
+			materialOrderListItemDelivered INT UNSIGNED NOT NULL DEFAULT 0,
+			materialOrderListItemComments VARCHAR(255) NULL,
+			materialOrderId INT UNSIGNED NOT NULL,
+			materialDescriptionId INT UNSIGNED NOT NULL,
+			costCodeId INT UNSIGNED NOT NULL,
+			zoneId INT UNSIGNED NULL,
+			PRIMARY KEY (materialOrderListItemId),
+			FOREIGN KEY (materialOrderId) REFERENCES materialOrders (materialOrderId),
+			FOREIGN KEY (materialDescriptionId) REFERENCES materialDescriptions (materialDescriptionId),
+			FOREIGN KEY (costCodeId) REFERENCES costCodes (costCodesId),
+			FOREIGN KEY (zoneId) REFERENCES zones (zoneId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialOrderListItems has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialOrderListItems: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for material buyouts
+	$sql = "CREATE TABLE IF NOT EXISTS materialBuyouts (
+			materialBuyoutId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialBuyoutArea VARCHAR(50) NOT NULL,
+			materialBuyoutSentVendor TINYINT(1) NOT NULL DEFAULT 0,
+			materialBuyoutSentPM TINYINT(1) NOT NULL DEFAULT 0,
+			materialBuyoutObservations TEXT NULL,
+			projectId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (materialBuyoutId),
+			FOREIGN KEY (projectId) REFERENCES projects (projectId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialBuyouts has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialBuyouts: " . $db->error . "<br>";
+	}
+
+
+	//Create a table to assign vendors to the material buyout
+	$sql = "CREATE TABLE IF NOT EXISTS materialBuyouts_vendors (
+			materialBuyouts_vendors_Id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialBuyoutId INT UNSIGNED NOT NULL,
+			vendorId INT UNSIGNED NOT NULL,
+			materialBuyouts_vendors_Award TINYINT(1) NOT NULL DEFAULT 0,
+			PRIMARY KEY (materialBuyouts_vendors_Id),
+			FOREIGN KEY (materialBuyoutId) REFERENCES materialBuyouts (materialBuyoutId),
+			FOREIGN KEY (vendorId) REFERENCES vendors (vendorId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialBuyouts_vendors has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialBuyouts_vendors: " . $db->error . "<br>";
+	}
+
+
+	// Create a table to hold the material buyout items
+	$sql = "CREATE TABLE IF NOT EXISTS materialBuyoutListItems (
+			materialBuyoutListItemId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialBuyoutListItemQuantity INT UNSIGNED NOT NULL DEFAULT 0,
+			materialBuyoutListItemDelivered INT UNSIGNED NOT NULL DEFAULT 0,
+			materialBuyoutListItemComments VARCHAR(255) NULL,
+			materialBuyoutId INT UNSIGNED NOT NULL,
+			materialDescriptionId INT UNSIGNED NOT NULL,
+			costCodeId INT UNSIGNED NOT NULL,
+			zoneId INT UNSIGNED NULL,
+			PRIMARY KEY (materialBuyoutListItemId),
+			FOREIGN KEY (materialBuyoutId) REFERENCES materialBuyouts (materialBuyoutId),
+			FOREIGN KEY (materialDescriptionId) REFERENCES materialDescriptions (materialDescriptionId),
+			FOREIGN KEY (costCodeId) REFERENCES costCodes (costCodesId),
+			FOREIGN KEY (zoneId) REFERENCES zones (zoneId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialBuyoutListItems has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialBuyoutListItems: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for the material buyout releases
+	$sql = "CREATE TABLE IF NOT EXISTS materialBuyoutReleases (
+			materialBuyoutReleaseId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			materialBuyoutReleaseNumber TINYINT UNSIGNED NOT NULL UNIQUE,
+			materialBuyoutReleaseQuantity INT UNSIGNED NOT NULL,
+			materialBuyoutReleaseDate DATE NULL,
+			materialBuyoutReleaseBackOrder INT UNSIGNED NULL,
+			materialBuyoutId INT UNSIGNED NOT NULL,
+			materialBuyoutListItemId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (materialBuyoutReleaseId),
+			FOREIGN KEY (materialBuyoutId) REFERENCES unltdmgmt.materialBuyouts (materialBuyoutId),
+			FOREIGN KEY (materialBuyoutListItemId) REFERENCES unltdmgmt.materialBuyoutListItems (materialBuyoutListItemId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table materialBuyoutReleases has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table materialBuyoutReleases: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for lighting buyouts
+	$sql = "CREATE TABLE IF NOT EXISTS lightingBuyouts (
+			lightingBuyoutId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			lightingBuyoutDescription VARCHAR(50) NOT NULL,
+			lightingBuyoutStatus VARCHAR(20) NULL,
+			lightingBuyoutSentVendor TINYINT(1) NOT NULL DEFAULT 0,
+			lightingBuyoutSentPM TINYINT(1) NOT NULL DEFAULT 0,
+			lightingBuyoutObservations TEXT NULL,
+			projectId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (lightingBuyoutId),
+			FOREIGN KEY (projectId) REFERENCES projects (projectId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table lightingBuyouts has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table lightingBuyouts: " . $db->error . "<br>";
+	}
+
+
+	// Create a table to assign vendors to the lighting buyouts
+	$sql = "CREATE TABLE IF NOT EXISTS lightingBuyouts_vendors (
+			lightingBuyouts_vendors_Id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			lightingBuyoutId INT UNSIGNED NOT NULL,
+			vendorId INT UNSIGNED NOT NULL,
+			lightingBuyouts_vendors_Award TINYINT(1) NOT NULL DEFAULT 0,
+			PRIMARY KEY (lightingBuyouts_vendors_Id),
+			FOREIGN KEY (lightingBuyoutId) REFERENCES lightingBuyouts (lightingBuyoutId),
+			FOREIGN KEY (vendorId) REFERENCES vendors (vendorId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table lightingBuyouts_vendors has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table lightingBuyouts_vendors: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for lighting fixtures
+	$sql = "CREATE TABLE IF NOT EXISTS lightingFixtures (
+			lightingFixtureId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			lightingFixtureQuantity INT UNSIGNED NOT NULL,
+			lightingFixtureUnit VARCHAR(10) NULL,
+			lightingFixtureType VARCHAR(50) NULL,
+			lightingFixtureManufacturer VARCHAR(50) NULL,
+			lightingFixtureDescription VARCHAR(128) NULL,
+			lightingFixtureCatalogNumber VARCHAR(50) NULL,
+			lightingFixtureAlternative TINYINT(1) NOT NULL DEFAULT 0,
+			lightingFixtureNotes VARCHAR(255) NULL,
+			lightingFixturePicture VARCHAR(255) NULL,
+			lightingBuyoutId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (lightingFixtureId),
+			FOREIGN KEY (lightingBuyoutId) REFERENCES unltdmgmt.lightingBuyouts (lightingBuyoutId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table lightingFixtures has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table lightingFixtures: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for lighting fixture parts
+	$sql = "CREATE TABLE IF NOT EXISTS lightingFixtureParts (
+			lightingFixturePartId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			lightingFixturePartCategory VARCHAR(15) NOT NULL,
+			lightingFixturePartType VARCHAR(20) NULL,
+			lightingFixturePartQuantity INT UNSIGNED NOT NULL,
+			lightingFixtureId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (lightingFixturePartId),
+			FOREIGN KEY (lightingFixtureId) REFERENCES lightingFixtures (lightingFixtureId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table lightingFixtureParts has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table lightingFixtureParts: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for lighting releases
+	$sql = "CREATE TABLE IF NOT EXISTS lightingReleases (
+			lightingReleaseId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			lightingReleaseNumber INT UNSIGNED NOT NULL,
+			lightingReleaseWholeFixture INT UNSIGNED NULL,
+			lightingFixtureId INT UNSIGNED NOT NULL,
+			lightingFixturePartId INT UNSIGNED NULL,
+			PRIMARY KEY (lightingReleaseId),
+			FOREIGN KEY (lightingFixtureId) REFERENCES lightingFixtures (lightingFixtureId),
+			FOREIGN KEY (lightingFixturePartId) REFERENCES lightingFixtureParts (lightingFixturePartId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table lightingReleases has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table lightingReleases: " . $db->error . "<br>";
+	}
+
+
+	//Create a table for quotes
+	$sql = "CREATE TABLE IF NOT EXISTS quotes (
+			quoteId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			quotePO INT UNSIGNED NULL,
+			quoteObservations TEXT NULL,
+			quoteAmount INT NULL,
+			quoteFile VARCHAR(255) NULL,
+			rfpId INT UNSIGNED NOT NULL,
+			materialOrders_vendors_Id INT UNSIGNED NULL,
+			materialBuyouts_vendors_Id INT UNSIGNED NULL,
+			lightingBuyouts_vendors_Id INT UNSIGNED NULL,
+			PRIMARY KEY (quoteId),
+			FOREIGN KEY (rfpId) REFERENCES unltdmgmt.rfps (rfpId),
+			FOREIGN KEY (materialBuyouts_vendors_Id) REFERENCES materialBuyouts_vendors (materialBuyouts_vendors_Id),
+			FOREIGN KEY (materialOrders_vendors_Id) REFERENCES materialOrders_vendors (materialOrders_vendors_Id),
+			FOREIGN KEY (lightingBuyouts_vendors_Id) REFERENCES lightingBuyouts_vendors (lightingBuyouts_vendors_Id)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table quotes has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table quotes: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for material deliveries
+	$sql = "CREATE TABLE IF NOT EXISTS deliveries (
+			deliveryId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			deliveryNumber TINYINT(2) UNSIGNED NOT NULL,
+			deliveryInvoice VARCHAR(255) NULL,
+			materialOrderId INT UNSIGNED NULL,
+			materialBuyoutReleaseId INT UNSIGNED NULL,
+			lightingReleaseId INT UNSIGNED NULL,
+			PRIMARY KEY (deliveryId),
+			FOREIGN KEY (materialOrderId) REFERENCES materialOrders (materialOrderId),
+			FOREIGN KEY (materialBuyoutReleaseId) REFERENCES materialBuyoutReleases (materialBuyoutReleaseId),
+			FOREIGN KEY (lightingReleaseId) REFERENCES lightingReleases (lightingReleaseId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table deliveries has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table deliveries: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for packing slips
+	$sql = "CREATE TABLE IF NOT EXISTS packingSlips (
+			packingSlipId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			packingSlipFile VARCHAR(255) NOT NULL,
+			packingSlipReviewed TINYINT(1) NOT NULL DEFAULT 0,
+			deliveryId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (packingSlipId),
+			FOREIGN KEY (deliveryId) REFERENCES deliveries (deliveryId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table packingSlips has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table packingSlips: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for file attachments
+	$sql = "CREATE TABLE IF NOT EXISTS fileAttachments (
+			fileAttachmentId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			fileAttachmentName VARCHAR(50) NULL,
+			fileAttachmentFile VARCHAR(225) NOT NULL,
+			materialOrderId INT UNSIGNED NULL,
+			materialBuyoutId INT UNSIGNED NULL,
+			dailyReportId INT UNSIGNED NULL,
+			PRIMARY KEY (fileAttachmentId),
+			FOREIGN KEY (materialOrderId) REFERENCES materialOrders (materialOrderId),
+			FOREIGN KEY (materialBuyoutId) REFERENCES materialBuyouts (materialBuyoutId),
+			FOREIGN KEY (dailyReportId) REFERENCES dailyReports (dailyReportId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table fileAttachments has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table fileAttachments: " . $db->error . "<br>";
+	}
+
+
+	//Create a table for time sheets
+	$sql = "CREATE TABLE IF NOT EXISTS timeSheets (
+			timeSheetsId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			timeSheetLunchHours TIME NOT NULL DEFAULT '00:30:00',
+			timeSheetRealStartTime TIMESTAMP NOT NULL,
+			timeSheetStartTime TIME NOT NULL,
+			timeSheetRealEndTime TIMESTAMP NOT NULL,
+			timeSheetEndTime TIME NOT NULL,
+			timeSheetClockinPic VARCHAR(255) NULL,
+			timeSheetClockoutPic VARCHAR(255) NULL,
+			projectId INT UNSIGNED NOT NULL,
+			employeeId INT UNSIGNED NOT NULL,
+			dailyReportId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (timeSheetsId),
+			FOREIGN KEY (projectId) REFERENCES projects (projectId),
+			FOREIGN KEY (employeeId) REFERENCES employees (employeeId),
+			FOREIGN KEY (dailyReportId) REFERENCES dailyReports (dailyReportId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table timeSheets has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table timeSheets: " . $db->error . "<br>";
+	}
+
+
+	//Create a table to assign cost codes and zones to the time sheets
+	$sql = "CREATE TABLE IF NOT EXISTS timeSheets_costCodes_zones (
+			timeSheets_costCode_zones_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			timeSheetId INT UNSIGNED NOT NULL,
+			costCodeId INT UNSIGNED NOT NULL,
+			zoneId INT UNSIGNED NULL,
+			timeSheetHoursWorked TIME NOT NULL,
+			PRIMARY KEY (timeSheets_costCode_zones_id),
+			FOREIGN KEY (timeSheetId) REFERENCES timeSheets (timeSheetsId),
+			FOREIGN KEY (costCodeId) REFERENCES costCodes (costCodesId),
+			FOREIGN KEY (zoneId) REFERENCES zones (zoneId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table timeSheets_costCodes_zones has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table timeSheets_costCodes_zones: " . $db->error . "<br>";
+	}
+
+
+	// Create a table for daily reports
+	$sql = "CREATE TABLE IF NOT EXISTS dailyReports (
+			dailyReportId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			dailyReportDate DATE NOT NULL,
+			dailyReportUecWorkers TINYINT NULL,
+			dailyReportPieceWorkers TINYINT NULL,
+			dailyReportSuperintComments TEXT NULL,
+			dailyReportManPowerSent TINYINT(1) NULL,
+			dailyReportRentalEquipment VARCHAR(255) NULL,
+			dailyReportTempLabor VARCHAR(255) NULL,
+			dailyReportSubcontractors VARCHAR(255) NULL,
+			dailyReportWeather VARCHAR(255) NULL,
+			dailyReportBackOrders VARCHAR(255) NULL,
+			dailyReportActivities TEXT NULL,
+			dailyReportDelays VARCHAR(255) NULL,
+			dailyReportExtraWork VARCHAR(255) NULL,
+			projectId INT UNSIGNED NOT NULL,
+			PRIMARY KEY (dailyReportId),
+			FOREIGN KEY (projectId) REFERENCES projects (projectId)
+			) ENGINE = InnoDB";
+
+	if ($db->query($sql) === TRUE) {
+		echo "Table dailyReports has been created successfully<br>";
+	}
+	else {
+		echo "Error creating the table dailyReports: " . $db->error . "<br>";
+	}
 
 	//Create a table for job applications
 	$sql = "CREATE TABLE IF NOT EXISTS jobApplications (

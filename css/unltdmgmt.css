@@ -72,7 +72,7 @@ body {
 	margin: 0;
 }
 
-#page-wrapper {
+.page-wrapper {
 	position: block;
 	margin: 100px 0 0 0;
 	padding: 15px;
@@ -102,7 +102,7 @@ body {
 		width: 225px;
 	}
 
-	#page-wrapper {
+	.page-wrapper {
 		margin: 51px 0 0 225px;
 	}
 }
@@ -165,6 +165,10 @@ body {
 
 .sidebar-sm li {
 	border-bottom: 1px solid #E7E7E7;
+}
+
+iframe {
+	width: 100%;
 }
 
 /*nav {
