@@ -13,7 +13,7 @@ $(document).ready(function() {
 			$(".sidebar-item").hide();
 			$("#sidebar ul").removeClass("sidebar-nav");
 			$("#sidebar ul").addClass("sidebar-sm");
-			$("#page-wrapper").css("margin-left", "70px");
+			$(".page-wrapper").css("margin-left", "70px");
 			return false;
 		});
 		$("#sidebar-lg").click(function() {
@@ -22,10 +22,17 @@ $(document).ready(function() {
 			$(".sidebar-item").show();
 			$("#sidebar ul").addClass("sidebar-nav");
 			$("#sidebar ul").removeClass("sidebar-sm");
-			$("#page-wrapper").css("margin-left", "225px");
+			$(".page-wrapper").css("margin-left", "225px");
 			return false;
 		});
 	}
+
+	$(".sidebar-toggle").click(function() {
+		$("#sidebar").slideToggle("fast", function() {
+			var sideheight = $(".sidebar-nav").height() + 100;
+			$(".page-wrapper").css("margin-top", sideheight + "px");
+		});
+	})
 
 	var filename = function() {
 		var url = document.location.href;
