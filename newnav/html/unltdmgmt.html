@@ -1,10 +1,3 @@
-<?php
-	require_once('connection.php');
-	require_once('functions.php');
-	session_start();
-	checkSession($db);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,18 +12,154 @@
 	<!-- Bootstrap Core CSS -->
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 
-	<!-- Font awesome -->
+	<!-- awesome font -->
 	<link rel="stylesheet" type="text/css" href="../font-awesome-4.7.0/css/font-awesome.css">
 
 	<!-- Custom CSS -->
 	<link rel="stylesheet" type="text/css" href="../css/unltdmgmt.css">
-
 </head>
 <body>
-	<?php include('navigation.php'); ?>
+	<div id="navigation">
+		<nav id="topnav" class="navbar navbar-default navbar-fixed-top">
 
-	<!-- Page Content -->
-	<div class="page-wrapper">
+			<!-- top navigation bar -->
+			<div class="navbar-header">
+				<button id="sidebar-toggle" type="button" class="">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="#" class="navbar-brand">
+					Unlimited Management
+					<span id="close-sidebar" class="fa fa-fw fa-caret-left"></span>
+					<span id="open-sidebar" class="fa fa-fw fa-caret-right"></span>
+				</a>
+			</div>
+			<div id="topnav-items">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+							<span class="fa fa-fw fa-user"></span>
+							User
+							<span class="fa fa-fw fa-caret-down"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="#"><span class="fa fa-fw fa-id-card" aria-hidden="true"></span> Profile </a>
+							</li>
+							<li>
+								<a href="#"><span class="fa fa-fw fa-users"></span> User Management </a>
+							</li>
+							<li>
+								<a href="roles.php"><span class="fa fa-fw fa-unlock-alt"></span> Role Management </a>
+							</li>
+							<li>
+								<a href="#"><span class="fa fa-fw fa-bar-chart"></span> App Statistics </a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="logout.php"><span class="fa fa-fw fa-sign-out"></span> Log Out </a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<!-- sidebar -->
+		<div id="sidebar">
+			<ul class="nav navbar-nav sidebar-nav">
+				<li id="dashboard">
+					<a href="dashboard.php">
+						<span class="fa fa-fw fa-dashboard" aria-hidden="true"></span>
+						<span class="sidebar-item"> Dashboard </span>
+					</a>
+				</li>
+				<li id="projects">
+					<a href="projects.php">
+						<span class="fa fa-fw fa-building" aria-hidden="true"></span>
+						<span class="sidebar-item">Projects</span>
+					</a>
+				</li>
+				<li id="serviceJobs">
+					<a href="serviceJobs.php">
+						<span class="fa fa-fw fa-building-o" aria-hidden="true"></span>
+						<span class="sidebar-item">Electrical Service Jobs</span>
+					</a>
+				</li>
+				<li id="avJobs">
+					<a href="avJobs.php">
+						<span class="fa fa-fw fa-building-o" aria-hidden="true"></span>
+						<span class="sidebar-item">AV Service Jobs</span>
+					</a>
+				</li>
+				<li id="timeSheets">
+					<a id="timeSheets" href="#">
+						<span class="fa fa-fw fa-clock-o" aria-hidden="true"></span> 
+						<span class="sidebar-item">Employee Time Sheets</span>
+					</a>
+				</li>
+				<li id="employees">
+					<a href="employees.php">
+						<span class="fa fa-fw fa-users" aria-hidden="true"></span>
+						<span class="sidebar-item">Company Employees</span>
+					</a>
+				</li>
+				<li id="evaluations">
+					<a href="evaluations.php">
+						<span class="fa fa-fw fa-list-alt" aria-hidden="true"></span>
+						<span class="sidebar-item">Employee Evaluations</span>
+					</a>
+				</li>
+				<li id="customers">
+					<a href="customers">
+						<span class="fa fa-fw fa-building-o" aria-hidden="true"></span> 
+						<span class="sidebar-item">Customers</span>
+					</a>
+				</li>
+				<li id="vendors">
+					<a href="vendors.php">
+						<span class="fa fa-fw fa-truck" aria-hidden="true"></span>
+						<span class="sidebar-item">Vendors</span>
+					</a>
+				</li>
+				<li id="applications">
+					<a href="applications.php">
+						<span class="fa fa-fw fa-clipboard" aria-hidden="true"></span>
+						<span class="sidebar-item">Job Applications</span>
+					</a>
+				</li>
+				<li id="tests">
+					<a href="tests.php">
+						<span class="fa fa-fw fa-list-alt" aria-hidden="true"></span>
+						<span class="sidebar-item">Application Tests</span>
+					</a>
+				</li>
+				<li id="costCodes">
+					<a href="costCodes.php">
+						<span class="fa fa-fw fa-th-list" aria-hidden="true"></span>
+						<span class="sidebar-item">Cost Codes</span>
+					</a>
+				</li>
+				<li id="materials">
+					<a href="#">
+						<span class="fa fa-fw fa-archive" aria-hidden="true"></span>
+						<span class="sidebar-item">Materials</span>
+					</a>
+				</li>
+				<li id="healthCenters">
+					<a href="healthCenters.php">
+						<span class="fa fa-fw fa-hospital-o" aria-hidden="true"></span>
+						<span class="sidebar-item">Health Centers</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+
+	<!-- Content -->
+	<div id="content">
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eget cursus urna, vitae mollis magna. In at nisi dapibus, venenatis erat id, suscipit dolor. Vivamus fringilla felis sed ante consequat dictum ut nec dui. Fusce vel sagittis nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce eget libero porttitor, faucibus urna at, tempor dolor. Quisque sit amet venenatis ex. Ut quis auctor quam. Proin sit amet diam porttitor, eleifend mi et, congue arcu. Cras justo purus, blandit eu turpis eu, euismod porttitor arcu. Donec facilisis quam nec leo lobortis condimentum. Proin eget egestas ex, at accumsan turpis. Nullam risus tortor, sagittis non purus et, aliquet blandit massa. Maecenas id tortor vel ex luctus bibendum et id lectus. Donec cursus posuere dolor, eu viverra ligula consectetur nec.
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eget cursus urna, vitae mollis magna. In at nisi dapibus, venenatis erat id, suscipit dolor. Vivamus fringilla felis sed ante consequat dictum ut nec dui. Fusce vel sagittis nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce eget libero porttitor, faucibus urna at, tempor dolor. Quisque sit amet venenatis ex. Ut quis auctor quam. Proin sit amet diam porttitor, eleifend mi et, congue arcu. Cras justo purus, blandit eu turpis eu, euismod porttitor arcu. Donec facilisis quam nec leo lobortis condimentum. Proin eget egestas ex, at accumsan turpis. Nullam risus tortor, sagittis non purus et, aliquet blandit massa. Maecenas id tortor vel ex luctus bibendum et id lectus. Donec cursus posuere dolor, eu viverra ligula consectetur nec.
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eget cursus urna, vitae mollis magna. In at nisi dapibus, venenatis erat id, suscipit dolor. Vivamus fringilla felis sed ante consequat dictum ut nec dui. Fusce vel sagittis nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce eget libero porttitor, faucibus urna at, tempor dolor. Quisque sit amet venenatis ex. Ut quis auctor quam. Proin sit amet diam porttitor, eleifend mi et, congue arcu. Cras justo purus, blandit eu turpis eu, euismod porttitor arcu. Donec facilisis quam nec leo lobortis condimentum. Proin eget egestas ex, at accumsan turpis. Nullam risus tortor, sagittis non purus et, aliquet blandit massa. Maecenas id tortor vel ex luctus bibendum et id lectus. Donec cursus posuere dolor, eu viverra ligula consectetur nec.
@@ -54,13 +183,7 @@
 	<!-- Bootstrap Core JavaScript -->
 	<script type="text/javascript" src="../js/bootstrap.js"></script>
 
-	<!-- Custom Javascript -->
+	<!-- Customer JavaScript -->
 	<script type="text/javascript" src="../js/unltdmgmt.js"></script>
-
 </body>
 </html>
-
-<?php
-	// Close connection
-	include('closeconn.php');
-?>

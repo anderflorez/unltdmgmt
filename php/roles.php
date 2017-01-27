@@ -23,28 +23,24 @@
 	<link rel="stylesheet" type="text/css" href="../font-awesome-4.7.0/css/font-awesome.css">
 
 	<!-- Custom CSS -->
-	<link rel="stylesheet" type="text/css" href="../css/unltdmgmt.css">
+	<link rel="stylesheet" type="text/css" href="../css/newcss.css">
 
 </head>
 <body>
-	<?php include('navigation.php'); ?>
+	<!-- Navigation -->
+	<nav>
+		<!-- Brand and toggle for sidebar -->
+		<!-- Top Menu Items -->
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="#"></a>Notifications</li>
+			<li><a href="#"></a>Tasks</li>
+			<li><a href="#"></a>Settings</li>
+			<li><a href="#"></a>User</li>
+		</ul>
+		<!-- Sidebar Menu -->
+	</nav>
 
 	<!-- Page Content -->
-	<div class="page-wrapper">
-		<header>
-			<h1 class="page-header">Roles</h1>
-		</header>
-		<form>
-			<div class="form-group">
-				<div class="input-group">
-					<input type="text" name="search" class="form-control" placeholder="Search Roles">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">Search</button>
-					</span>
-				</div>
-			</div>
-		</form>	
-	</div>
 
 	<!-- JQuery -->
 	<script type="text/javascript" src="../js/jquery-3.1.1.js"></script>
@@ -53,7 +49,7 @@
 	<script type="text/javascript" src="../js/bootstrap.js"></script>
 
 	<!-- Custom Javascript -->
-	<script type="text/javascript" src="../js/unltdmgmt.js"></script>
+	<!-- <script type="text/javascript" src="../js/unltdmgmt.js"></script> -->
 
 </body>
 </html>
